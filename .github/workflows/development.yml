@@ -2,9 +2,6 @@ name: Development
 
 on:
   push:
-    branches-ignore:
-      - master
-      - main
 
 jobs:
   test_default:
@@ -104,72 +101,83 @@ jobs:
           sed -i "s/teastore-base:latest/teastore-base:${GIT_BRANCH}/g" services/tools.descartes.teastore.recommender/Dockerfile
           sed -i "s/teastore-base:latest/teastore-base:${GIT_BRANCH}/g" services/tools.descartes.teastore.registry/Dockerfile
           sed -i "s/teastore-base:latest/teastore-base:${GIT_BRANCH}/g" services/tools.descartes.teastore.webui/Dockerfile
-
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
 
       - name: Build and push teastore-base
         uses: docker/build-push-action@v2
         with:
           context: ./utilities/tools.descartes.teastore.dockerbase
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-base:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-base:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-recommender
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.recommender
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-recommender:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-recommender:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-webui
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.webui
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-webui:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-webui:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-image
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.image
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-image:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-image:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-auth
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.auth
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-auth:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-auth:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-persistence
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.persistence
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-persistence:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-persistence:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-registry
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.registry
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-registry:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-registry:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-db
         uses: docker/build-push-action@v2
         with:
           context: ./utilities/tools.descartes.teastore.database
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-db:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-db:${{env.GIT_BRANCH}}
 
       - name: Build and push teastore-kieker-rabbitmq
         uses: docker/build-push-action@v2
         with:
           context: ./utilities/tools.descartes.teastore.kieker.rabbitmq
+          platforms: linux/arm64,linux/amd64
           push: true
-          tags: descartesresearch/teastore-kieker-rabbitmq:${{env.GIT_BRANCH}}
+          tags: avinashyadavpuresoftware/teastore-kieker-rabbitmq:${{env.GIT_BRANCH}}
