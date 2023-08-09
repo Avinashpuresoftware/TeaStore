@@ -13,6 +13,11 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
       - run: |
           mvn clean install
           cd tools/ && ./build_docker.sh && cd ..
@@ -30,6 +35,11 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
       - run: |
           mvn clean install
           cd tools/ && ./build_docker.sh && cd ..
@@ -47,6 +57,11 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
       - run: |
           mvn clean install
           cd tools/ && ./build_docker.sh && cd ..
@@ -66,6 +81,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
       - run: |
           mvn clean install
           cd tools/ && ./build_docker.sh && cd ..
@@ -90,6 +110,16 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
       - run: |
           mvn clean install -DskipTests
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
@@ -101,17 +131,6 @@ jobs:
           sed -i "s/teastore-base:latest/teastore-base:${GIT_BRANCH}/g" services/tools.descartes.teastore.recommender/Dockerfile
           sed -i "s/teastore-base:latest/teastore-base:${GIT_BRANCH}/g" services/tools.descartes.teastore.registry/Dockerfile
           sed -i "s/teastore-base:latest/teastore-base:${GIT_BRANCH}/g" services/tools.descartes.teastore.webui/Dockerfile
-      - name: Set up QEMU
-        id: qemu
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: avinashyadavpuresoftware
-          password: 958956b2-e8a6-4461-82e8-451eb8433325
-
       - name: Build and push teastore-base
         uses: docker/build-push-action@v2
         with:
