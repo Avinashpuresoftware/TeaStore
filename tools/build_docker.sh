@@ -15,7 +15,7 @@ while getopts 'pr:' flag; do
   esac
 done
 
-docker login -u avinashyadavpuresoftware -p 958956b2-e8a6-4461-82e8-451eb8433325
+docker run -it --rm --privileged tonistiigi/binfmt --install all
 docker buildx create --use --name mybuilder
 docker buildx build --platform ${DOCKER_PLATFORMS} -t "${registry}teastore-db" ../utilities/tools.descartes.teastore.database/ --push
 docker buildx build --platform ${DOCKER_PLATFORMS} -t "${registry}teastore-kieker-rabbitmq" ../utilities/tools.descartes.teastore.kieker.rabbitmq/ --push
