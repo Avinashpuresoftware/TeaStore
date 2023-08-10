@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
       - run: |
           mvn clean install
           cd tools/ && ./build_docker.sh && cd ..
@@ -88,72 +93,92 @@ jobs:
           VERSION=$(grep -o ".\..\.." <<< "${{ github.event.milestone.title }}")
           echo "VERSION=${VERSION}" >> ${GITHUB_ENV}
           echo "Version:_${VERSION}_"
-
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Inspect builder
+        run: |
+          echo "Name:      ${{ steps.buildx.outputs.name }}"
+          echo "Endpoint:  ${{ steps.buildx.outputs.endpoint }}"
+          echo "Status:    ${{ steps.buildx.outputs.status }}"
+          echo "Flags:     ${{ steps.buildx.outputs.flags }}"
+          echo "Platforms: ${{ steps.buildx.outputs.platforms }}"      
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: avinashyadavpuresoftware
+          password: 958956b2-e8a6-4461-82e8-451eb8433325
 
       - name: Build and push teastore-base
         uses: docker/build-push-action@v2
         with:
           context: ./utilities/tools.descartes.teastore.dockerbase
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-base:latest,descartesresearch/teastore-base:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-base:latest,descartesresearch/teastore-base:${{env.VERSION}}
 
       - name: Build and push teastore-recommender
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.recommender
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-recommender:latest,descartesresearch/teastore-recommender:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-recommender:latest,descartesresearch/teastore-recommender:${{env.VERSION}}
 
       - name: Build and push teastore-webui
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.webui
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-webui:latest,descartesresearch/teastore-webui:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-webui:latest,descartesresearch/teastore-webui:${{env.VERSION}}
 
       - name: Build and push teastore-image
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.image
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-image:latest,descartesresearch/teastore-image:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-image:latest,descartesresearch/teastore-image:${{env.VERSION}}
 
       - name: Build and push teastore-auth
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.auth
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-auth:latest,descartesresearch/teastore-auth:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-auth:latest,descartesresearch/teastore-auth:${{env.VERSION}}
 
       - name: Build and push teastore-persistence
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.persistence
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-persistence:latest,descartesresearch/teastore-persistence:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-persistence:latest,descartesresearch/teastore-persistence:${{env.VERSION}}
 
       - name: Build and push teastore-registry
         uses: docker/build-push-action@v2
         with:
           context: ./services/tools.descartes.teastore.registry
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-registry:latest,descartesresearch/teastore-registry:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-registry:latest,descartesresearch/teastore-registry:${{env.VERSION}}
 
       - name: Build and push teastore-db
         uses: docker/build-push-action@v2
         with:
           context: ./utilities/tools.descartes.teastore.database
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-db:latest,descartesresearch/teastore-db:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-db:latest,descartesresearch/teastore-db:${{env.VERSION}}
 
       - name: Build and push teastore-kieker-rabbitmq
         uses: docker/build-push-action@v2
         with:
           context: ./utilities/tools.descartes.teastore.kieker.rabbitmq
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: descartesresearch/teastore-kieker-rabbitmq:latest,descartesresearch/teastore-kieker-rabbitmq:${{env.VERSION}}
+          tags: avinashyadavpuresoftware/teastore-kieker-rabbitmq:latest,descartesresearch/teastore-kieker-rabbitmq:${{env.VERSION}}
